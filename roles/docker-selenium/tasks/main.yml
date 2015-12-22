@@ -1,0 +1,23 @@
+---
+- name: run hub
+  docker:
+    name: hub
+    image: selenium/hub
+    detach: true
+    ports: 4444:4444
+
+- name: run a firefox node
+  docker:
+    name: "firefox{{ item }}"
+    image: selenium/node-firefox
+    detach: true
+    links: hub
+    with_sequence: count={{ num_firefox }}
+
+- name: run a chrome node
+  docker:
+    name: "chrome{{ item }}"
+    image: selenium/node-chrome
+    detach: true
+    links: hub
+    with_sequence: count={{ num_chrome }}

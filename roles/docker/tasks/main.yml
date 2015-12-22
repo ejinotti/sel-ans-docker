@@ -23,19 +23,22 @@
 - name: install docker engine
   apt: name=docker-engine update_cache=yes
 
-- name: create docker group
-  group: name=docker state=present
+- name: start docker service
+  service: name=docker state=restarted
 
-- name: add user(s) to docker group
-  user: name={{ item }} group=docker state=present
-  with_items: docker_users
-  when: docker_users is defined
-
-- name: configure docker
-  template:
-    src: default_docker.j2
-    dest: /etc/default/docker
-    mode: 0644
-    owner: root
-    group: root
-  notify: restart docker
+# - name: create docker group
+#   group: name=docker state=present
+#
+# - name: add user(s) to docker group
+#   user: name={{ item }} group=docker state=present
+#   with_items: docker_users
+#   when: docker_users is defined
+#
+# - name: configure docker
+#   template:
+#     src: default_docker.j2
+#     dest: /etc/default/docker
+#     mode: 0644
+#     owner: root
+#     group: root
+#   notify: restart docker
